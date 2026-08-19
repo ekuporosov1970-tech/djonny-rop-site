@@ -106,6 +106,15 @@
 </main>
 <script>
   (function () {
+    var titleBreak = document.querySelector('.hero h1 br');
+    var nextText = titleBreak && titleBreak.nextSibling;
+
+    if (nextText && nextText.nodeType === 3 && !/^\s/.test(nextText.nodeValue)) {
+      titleBreak.parentNode.insertBefore(document.createTextNode(' '), nextText);
+    }
+  }());
+
+  (function () {
     var menu = document.querySelector('.mobile-menu');
     if (!menu) return;
 
