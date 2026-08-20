@@ -41,6 +41,7 @@
     .article-body>h1:first-child img{display:block;width:100%;height:auto;margin:0 0 42px;border-radius:18px;box-shadow:0 22px 54px rgba(8,27,42,.14)}
     .article-body>h1:first-child strong{font-weight:780}
     .article-body p{margin:0 0 22px;color:#263f49;font-size:1.12rem;line-height:1.78}
+    .article-body img{height:auto!important;max-width:100%}
     .article-body>h1:first-child+p{color:#23424d;font-size:1.38rem;line-height:1.58}
     .article-body h2{margin:78px 0 26px;font-size:clamp(2rem,3.3vw,3rem);font-weight:760;letter-spacing:-.04em;line-height:1.12}
     .article-body h3{margin:52px 0 20px;font-size:clamp(1.48rem,2.25vw,2rem);font-weight:750;letter-spacing:-.025em;line-height:1.22}
@@ -48,15 +49,24 @@
     .article-body em{color:#49616a}
     .article-body>p>img{display:block;width:100%;height:auto;margin:34px 0 10px;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 14px 34px rgba(8,27,42,.08)}
     .article-body table{display:block;width:100%;margin:30px 0;border:0;border-collapse:collapse}
-    .article-body colgroup,.article-body table th:first-child{display:none}
+    .article-body colgroup{display:none}
+    .article-body table th:empty{display:none}
     .article-body thead,.article-body tbody,.article-body tr{display:block}
     .article-body th{display:block;padding:23px 25px;border:0;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;background:#e8eeee;color:var(--ink);font-size:1.08rem;font-weight:700;line-height:1.65;text-align:left}
-    .article-body ul{margin:16px 0 4px;padding-left:28px}
+    .article-body th img{display:block;width:auto!important;margin:0 auto 13px;border-radius:9px}
+    .article-body ul,.article-body ol{margin:16px 0 4px;padding-left:28px}
     .article-body li{padding-left:6px;color:var(--gold)}
     .article-body blockquote{margin:0 0 24px;padding:0;border:0}
     .article-body blockquote p{color:#263f49}
     .article-body li blockquote p{margin:0;color:var(--ink);font-size:1.12rem}
     .article-body ul+blockquote{margin-left:34px}
+    .article-body>h1+blockquote{margin:0 0 10px;padding:18px 22px 10px;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;background:#e8eeee}
+    .article-body>h1+blockquote p{margin:0 0 8px;color:var(--ink);font-weight:720}
+    .article-body>h1+blockquote+ol{margin:0 0 48px;padding:20px 22px 20px 46px;border:1px solid var(--line);border-radius:10px;background:#fff}
+    .article-body>h1+blockquote+ol li{padding:3px 0;color:var(--ink)}
+    .article-body>h1+blockquote+ol blockquote{margin:0}
+    .article-body>h1+blockquote+ol p{margin:0;font-size:.96rem;line-height:1.52}
+    .article-body h3:empty{display:none}
     .toc{position:sticky;top:110px;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
     .toc-title{display:block;margin-bottom:15px;color:var(--gold);font-size:.72rem;font-weight:780;letter-spacing:.12em;text-transform:uppercase}
     .toc ol{display:grid;gap:11px;margin:0;padding:0;list-style:none}
@@ -65,14 +75,16 @@
     .article-end{display:grid;grid-template-columns:1fr auto;gap:36px;align-items:center;margin-top:76px;padding:36px 40px;border-radius:14px;background:linear-gradient(120deg,#081b2a,#0c4b55);color:var(--ivory)}
     .article-end p{max-width:640px;margin:8px 0 0;color:var(--mist);line-height:1.6}
     .article-end h2{margin:0;font-size:clamp(1.65rem,2.6vw,2.4rem);letter-spacing:-.035em}
-    .contact-button{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 24px;border-radius:6px;background:var(--gold);color:var(--ink);font-weight:720;white-space:nowrap;transition:transform .18s ease}
+    .contact-actions{display:flex;gap:12px}
+    .contact-button{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 24px;border:1px solid var(--gold);border-radius:6px;background:var(--gold);color:var(--ink);font-weight:720;white-space:nowrap;transition:transform .18s ease}
+    .contact-button.telegram{background:transparent;color:var(--ivory)}
     .contact-button:hover{transform:translateY(-2px)}
     footer{border-top:1px solid var(--line);background:#fff;color:#6a797e}
     footer>div{display:flex;justify-content:space-between;width:min(1180px,calc(100% - 64px));margin:auto;padding:28px 0;font-size:.86rem}
     .back-to-top{position:fixed;z-index:40;right:24px;bottom:24px;display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border:1px solid var(--gold);border-radius:50%;background:rgba(8,27,42,.9);color:var(--gold);box-shadow:0 10px 28px rgba(0,0,0,.22);opacity:0;visibility:hidden;transform:translateY(10px);transition:.2s}
     .back-to-top.is-visible{opacity:1;visibility:visible;transform:none}
     .back-to-top svg{width:22px;height:22px}
-    @media(max-width:960px){.article-layout{grid-template-columns:minmax(0,var(--reading));justify-content:center}.toc{display:none}.article-end{grid-template-columns:1fr}.contact-button{justify-self:start}.article-body>h1:first-child{font-size:clamp(2.75rem,7.2vw,4.2rem)}}
+    @media(max-width:960px){.article-layout{grid-template-columns:minmax(0,var(--reading));justify-content:center}.toc{display:none}.article-end{grid-template-columns:1fr}.contact-actions{justify-self:start}.article-body>h1:first-child{font-size:clamp(2.75rem,7.2vw,4.2rem)}}
     @media(max-width:680px){
       html{scroll-padding-top:78px}
       .header-inner,.page,footer>div{width:calc(100% - 40px)}
@@ -91,7 +103,7 @@
       .article-body th{padding:19px 18px;font-size:1rem}
       .article-body ul+blockquote{margin-left:22px}
       .article-end{margin-top:58px;padding:28px 22px}
-      .contact-button{width:100%}
+      .contact-actions{display:grid;width:100%}.contact-button{width:100%}
       footer>div{flex-direction:column;gap:10px;padding-bottom:calc(28px + env(safe-area-inset-bottom))}
       .back-to-top{right:16px;bottom:calc(18px + env(safe-area-inset-bottom));width:46px;height:46px}
     }
@@ -529,7 +541,10 @@ id="инопланетяне-тоже-целевая-аудитория-если
         <h2>Нужен текст для бизнеса?</h2>
         <p>Расскажите о задаче — обсудим тему, аудиторию и результат, к которому должен привести материал.</p>
       </div>
-      <a class="contact-button" href="mailto:djonny.rop@yandex.ru">Написать на почту</a>
+      <div class="contact-actions">
+        <a class="contact-button" href="mailto:djonny.rop@yandex.ru">Написать на почту</a>
+        <a class="contact-button telegram" href="https://t.me/djonny1613" target="_blank" rel="noreferrer">Написать в Telegram</a>
+      </div>
     </section>
   </main>
   <footer>
