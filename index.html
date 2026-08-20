@@ -99,8 +99,12 @@
     .certificate-arrow:not(:disabled):hover{border-color:var(--gold);background:var(--ink);color:var(--gold);transform:scale(1.06)}
   }
   @media(max-width:680px){
-    .certificates{margin-right:-20px;padding:0}
-    .certificate-track{padding-right:20px}
+    .about{overflow:hidden}
+    .about .shell,.about-grid,.about-grid>*,.about-copy{min-width:0;max-width:100%}
+    .about-grid{width:100%}
+    .about h2,.about-copy p{max-width:100%;overflow-wrap:break-word}
+    .certificates{width:100%;min-width:0;max-width:100%;margin:0 0 23px;padding:0;overflow:hidden}
+    .certificate-track{width:100%;min-width:0;max-width:100%;overflow-x:scroll;padding-right:4px;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y}
     .certificate-arrow{display:none}
   }
   @media(prefers-reduced-motion:reduce){.certificate-track{scroll-behavior:auto}.certificate-card,.certificate-arrow{transition:none}.certificate-card.is-current,.certificate-card:hover,.certificate-card:focus-visible{transform:none}}
