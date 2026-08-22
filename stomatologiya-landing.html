@@ -97,34 +97,55 @@
     }
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reading-progress,.back-link span,.cta,.contact-button,.back-to-top{transition:none}}
 
-    /* Research proof: process behind the selling text */
+    /* Research proof: compact carousel in the same visual language as the certificate cards */
     .research-section{width:min(1180px,calc(100% - 64px));margin:4px auto 38px;padding:31px 31px 28px;border:1px solid rgba(7,31,42,.10);border-radius:22px;background:#fff;box-shadow:0 18px 54px rgba(7,31,42,.08)}
-    .research-top{display:grid;grid-template-columns:1.16fr .84fr;gap:48px;align-items:end;margin-bottom:23px}
+    .research-top{margin-bottom:23px}
     .research-kicker{margin:0 0 10px;color:var(--teal);font-size:.72rem;font-weight:850;letter-spacing:.13em;text-transform:uppercase}
     .research-top h2{max-width:680px;margin:0;font-size:clamp(1.8rem,3.2vw,3rem);font-weight:800;letter-spacing:-.045em;line-height:1.04}
-    .research-top>div>p:last-child{max-width:720px;margin:15px 0 0;color:#53696e;line-height:1.65}
-    .research-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;align-self:end}
-    .research-flow span{position:relative;padding:9px 8px;border:1px solid rgba(11,102,101,.13);border-radius:9px;background:#f4f9f7;color:#436066;font-size:.71rem;font-weight:760;text-align:center;white-space:nowrap}
-    .research-flow span:not(:last-child):after{position:absolute;z-index:2;top:50%;right:-8px;width:8px;height:1px;background:rgba(11,102,101,.36);content:""}
-    .research-carousel-wrap{position:relative}
-    .research-track{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(292px,32.2%);gap:15px;overflow-x:auto;padding:3px 3px 13px;scroll-behavior:smooth;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:rgba(11,102,101,.36) transparent}
-    .research-track::-webkit-scrollbar{height:7px}.research-track::-webkit-scrollbar-thumb{border-radius:999px;background:rgba(11,102,101,.30)}
-    .research-card{position:relative;display:block;overflow:hidden;padding:0;border:1px solid rgba(7,31,42,.11);border-radius:15px;background:#fbfcfb;color:var(--ink);text-align:left;cursor:zoom-in;scroll-snap-align:start;box-shadow:0 9px 24px rgba(7,31,42,.055);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
-    .research-card:hover,.research-card:focus-visible{transform:translateY(-3px);border-color:rgba(11,102,101,.35);box-shadow:0 16px 34px rgba(7,31,42,.12);outline:none}
-    .research-thumb{position:relative;overflow:hidden;aspect-ratio:16/9;border-bottom:1px solid rgba(7,31,42,.09);background:#edf2f1}
-    .research-thumb img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .25s ease}.research-card:hover .research-thumb img{transform:scale(1.018)}
-    .research-step{position:absolute;top:11px;left:11px;padding:6px 8px;border-radius:7px;background:rgba(7,31,42,.88);color:#fff;font-size:.66rem;font-weight:850;letter-spacing:.08em}
-    .research-card-copy{display:block;padding:17px 17px 18px}.research-card-copy strong{display:block;margin-bottom:8px;font-size:1rem;letter-spacing:-.015em}.research-card-copy small{display:block;color:#607579;font-size:.79rem;line-height:1.52}
-    .research-hint{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:11px;color:#6b7f82;font-size:.76rem}.mobile-hint{display:none}
-    .research-arrow{position:absolute;z-index:5;top:calc(50% - 29px);display:grid;place-items:center;width:42px;height:42px;border:1px solid rgba(7,31,42,.12);border-radius:50%;background:rgba(255,255,255,.96);color:var(--teal);font-size:1.3rem;box-shadow:0 8px 22px rgba(7,31,42,.12);cursor:pointer;transition:transform .15s ease,opacity .15s ease}.research-arrow:hover{transform:scale(1.05)}.research-arrow.prev{left:-21px}.research-arrow.next{right:-21px}
-    .analytics-hover-preview{position:fixed;z-index:300;inset:0;display:flex;align-items:center;justify-content:center;padding:6vh 4vw;visibility:hidden;background:rgba(4,18,24,.82);opacity:0;pointer-events:none;backdrop-filter:blur(5px);transition:opacity .12s ease,visibility .12s ease}
-    .analytics-hover-preview.is-open{visibility:visible;opacity:1}.analytics-hover-preview figure{max-width:94vw;max-height:88vh;margin:0;padding:10px;border:1px solid rgba(255,255,255,.2);border-radius:13px;background:#fff;box-shadow:0 30px 90px rgba(0,0,0,.42)}.analytics-hover-preview img{display:block;max-width:92vw;max-height:82vh;width:auto;height:auto;object-fit:contain}.analytics-hover-preview figcaption{padding:9px 4px 1px;color:#355159;font-size:.79rem;font-weight:700}
-    .analytics-modal{width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:rgba(4,18,24,.96);color:#fff}.analytics-modal::backdrop{background:rgba(4,18,24,.96)}
-    .analytics-modal[open]{display:grid;grid-template-rows:auto 1fr auto}.analytics-modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.13);background:#071f2a}.analytics-modal-title{min-width:0;font-size:.88rem;font-weight:760;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.analytics-modal-actions{display:flex;align-items:center;gap:8px}.analytics-icon-button{display:grid;place-items:center;width:39px;height:39px;padding:0;border:1px solid rgba(255,255,255,.18);border-radius:50%;background:rgba(255,255,255,.08);color:#fff;font-size:1.12rem;cursor:pointer}.analytics-close{font-size:1.45rem}
-    .analytics-modal-stage{position:relative;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;background:#10262d}.analytics-modal-canvas{display:flex;align-items:flex-start;justify-content:center;min-width:100%;min-height:100%;padding:16px}.analytics-modal-img{display:block;width:auto;height:auto;max-width:none;max-height:none;box-shadow:0 12px 48px rgba(0,0,0,.35);transform-origin:top left;user-select:none;-webkit-user-drag:none}
-    .analytics-modal-foot{display:grid;grid-template-columns:46px 1fr 46px;align-items:center;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));border-top:1px solid rgba(255,255,255,.13);background:#071f2a}.analytics-modal-foot button{height:42px;border:1px solid rgba(255,255,255,.17);border-radius:10px;background:rgba(255,255,255,.08);color:#fff;font-size:1.25rem}.analytics-counter{text-align:center;color:#bed0cf;font-size:.78rem}
-    @media(max-width:980px){.research-top{grid-template-columns:1fr;gap:20px}.research-flow{max-width:650px}.research-track{grid-auto-columns:minmax(295px,46%)}}
-    @media(max-width:680px){.research-section{width:calc(100% - 40px);margin:3px auto 28px;padding:22px 0 19px;border-radius:17px}.research-top{padding:0 19px}.research-top h2{font-size:1.78rem}.research-top>div>p:last-child{font-size:.92rem}.research-flow{grid-template-columns:1fr 1fr;padding-top:2px}.research-flow span{white-space:normal}.research-flow span:after{display:none}.research-carousel-wrap{overflow:hidden}.research-track{grid-auto-columns:82vw;gap:12px;padding:2px 19px 12px;scroll-padding-left:19px}.research-card{border-radius:13px;cursor:pointer}.research-card:hover{transform:none}.research-card-copy{padding:15px}.research-arrow{display:none}.research-hint{padding:0 19px}.desktop-hint{display:none}.mobile-hint{display:inline}.analytics-hover-preview{display:none}}
+    .research-top>p:last-child{max-width:780px;margin:15px 0 0;color:#53696e;line-height:1.65}
+    .research-carousel-wrap{position:relative;width:min(680px,100%);margin:0 auto;padding:0 38px}
+    .research-track{display:flex;gap:12px;overflow-x:auto;padding:8px 4px 15px;scroll-behavior:smooth;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-inline:contain;touch-action:pan-x pan-y}
+    .research-track::-webkit-scrollbar{display:none}
+    .research-card{position:relative;display:flex;flex:0 0 184px;flex-direction:column;justify-content:space-between;height:140px;min-height:140px;padding:15px 14px 13px;overflow:hidden;border:1px solid rgba(217,183,126,.46);border-radius:10px;background:linear-gradient(145deg,#081b2a,#0a3340);color:#f7f2e8;text-align:left;box-shadow:0 7px 18px rgba(8,27,42,.1);scroll-snap-align:center;cursor:pointer;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease,background-color .2s ease}
+    .research-card::before{position:absolute;top:-26px;right:-21px;width:70px;height:52px;border-bottom:1px solid rgba(34,166,161,.48);background:rgba(34,166,161,.09);content:"";transform:rotate(-34deg)}
+    .research-step{position:relative;color:var(--gold);font-size:.61rem;font-weight:780;letter-spacing:.12em;text-transform:uppercase}
+    .research-card-title{position:relative;margin:8px 0;color:#f7f2e8;font-size:.84rem;font-weight:720;line-height:1.24}
+    .research-card-open{position:relative;color:rgba(201,215,219,.82);font-size:.68rem;font-weight:650}
+    .research-card:hover,.research-card:focus-visible{transform:translateY(-2px);border-color:rgba(217,183,126,.95);background:linear-gradient(145deg,#0a2434,#0c4650);box-shadow:0 12px 25px rgba(8,27,42,.2),0 0 0 1px rgba(217,183,126,.1);outline:none}
+    .research-card:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+    .research-arrow{position:absolute;z-index:2;top:62px;display:inline-flex;align-items:center;justify-content:center;width:31px;height:31px;padding:0;border:1px solid rgba(12,92,99,.28);border-radius:50%;background:rgba(255,255,255,.7);color:var(--teal);font:700 1.28rem/1 Arial,sans-serif;cursor:pointer;transition:background-color .18s ease,color .18s ease,border-color .18s ease,transform .18s ease}
+    .research-arrow.prev{left:0}.research-arrow.next{right:0}.research-arrow:disabled{cursor:default;opacity:.3}
+    .research-arrow:not(:disabled):hover{border-color:var(--gold);background:var(--ink);color:var(--gold);transform:scale(1.06)}
+    .research-arrow:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+    .research-hint{display:flex;align-items:center;justify-content:space-between;gap:18px;max-width:780px;margin:11px auto 0;color:#6b7f82;font-size:.76rem}
+    .analytics-click-preview{position:fixed;z-index:300;inset:0;display:flex;align-items:center;justify-content:center;padding:6vh 4vw;visibility:hidden;background:rgba(4,18,24,.84);opacity:0;pointer-events:none;backdrop-filter:blur(5px);cursor:zoom-out;transition:opacity .14s ease,visibility .14s ease}
+    .analytics-click-preview.is-open{visibility:visible;opacity:1;pointer-events:auto}
+    .analytics-click-preview figure{max-width:94vw;max-height:90vh;margin:0;padding:10px;overflow:auto;border:1px solid rgba(255,255,255,.2);border-radius:13px;background:#fff;box-shadow:0 30px 90px rgba(0,0,0,.42)}
+    .analytics-click-preview img{display:block;max-width:92vw;max-height:82vh;width:auto;height:auto;object-fit:contain;user-select:none;-webkit-user-drag:none}
+    .analytics-click-preview figcaption{padding:9px 4px 1px;color:#355159;font-size:.79rem;font-weight:700}
+    @media(min-width:981px){
+      .hero-grid{grid-template-columns:1.06fr .94fr;column-gap:66px;row-gap:20px;align-items:start}
+      .hero-heading{grid-column:1/-1;align-self:end}
+      .hero-heading h2{max-width:none}
+      .hero-copy{grid-column:1;align-self:start}
+      .hero-visual{grid-column:2;align-self:start}
+      .hero-copy .hero-offer{margin-top:0}
+    }
+    @media(max-width:980px){
+      .hero-grid{row-gap:0}
+      .hero-visual{margin-top:34px}
+    }
+    @media(max-width:680px){
+      .research-section{width:calc(100% - 40px);margin:3px auto 28px;padding:22px 19px 19px;border-radius:17px}
+      .research-top h2{font-size:1.78rem}.research-top>p:last-child{font-size:.92rem}
+      .research-carousel-wrap{width:100%;max-width:100%;padding:0;overflow:hidden}
+      .research-track{width:100%;min-width:0;max-width:100%;overflow-x:scroll;padding-right:4px;-webkit-overflow-scrolling:touch}
+      .research-arrow{display:none}.research-hint{flex-direction:column;align-items:flex-start;gap:6px;font-size:.72rem}
+      .analytics-click-preview{padding:12px;align-items:center}
+      .analytics-click-preview figure{max-width:100%;max-height:calc(100dvh - 24px);padding:8px;-webkit-overflow-scrolling:touch;touch-action:pinch-zoom}
+      .analytics-click-preview img{max-width:calc(100vw - 42px);max-height:calc(100dvh - 92px);touch-action:pinch-zoom}
+    }
+    @media(prefers-reduced-motion:reduce){.research-track{scroll-behavior:auto}.research-card,.research-arrow,.analytics-click-preview{transition:none}.research-card:hover,.research-card:focus-visible{transform:none}}
 
   </style>
 </head>
@@ -144,39 +165,39 @@
       <p class="portfolio-note"><strong>Формат работы:</strong> исходный текст показан в интерфейсе лендинга. Клиника, цены, форма и кнопки внутри макета — часть демонстрационного материала, а не действующее предложение.</p>
     </section>
 
-
     <section class="research-section" aria-labelledby="research-title">
       <div class="research-top">
-        <div>
-          <p class="research-kicker">Исследование перед текстом</p>
-          <h2 id="research-title">Как я готовил этот продающий текст</h2>
-          <p>Сначала разобрал целевую аудиторию, связал характеристики услуги с проблемами пациента, сравнил предложение с конкурентами и изучил конкурентное поле. Только после этого собрал аргументы и структуру текста.</p>
-        </div>
-        <div class="research-flow" aria-label="Этапы исследования"><span>01 · ЦА</span><span>02 · Проблемы</span><span>03 · Сравнение</span><span>04 · Рынок</span></div>
+        <p class="research-kicker">Исследование перед текстом</p>
+        <h2 id="research-title">Как я готовил этот продающий текст</h2>
+        <p>Сначала разобрал целевую аудиторию, связал характеристики услуги с проблемами пациента, сравнил предложение с конкурентами и изучил конкурентное поле. Только после этого собрал аргументы и структуру текста.</p>
       </div>
       <div class="research-carousel-wrap">
         <button class="research-arrow prev" type="button" aria-label="Предыдущий материал">‹</button>
-        <div class="research-track" id="research-track">
-          <button class="research-card" type="button" data-full="./analytics-01-target-audience.png" data-title="Анализ целевой аудитории">
-            <span class="research-thumb"><img src="./analytics-01-target-audience-thumb.webp" alt="Карта анализа целевой аудитории в Miro" loading="lazy"><span class="research-step">01 · MIRO</span></span>
-            <span class="research-card-copy"><strong>Анализ целевой аудитории</strong><small>Портрет пациента → мотивы покупки → критерии выбора → возражения.</small></span>
+        <div class="research-track" id="research-track" aria-label="Аналитические материалы">
+          <button class="research-card" type="button" data-full="./analytics-01-target-audience.png" data-title="Анализ ЦА" aria-label="Открыть: Анализ ЦА">
+            <span class="research-step">01 · MIRO</span>
+            <span class="research-card-title">Анализ ЦА</span>
+            <span class="research-card-open">Открыть материал</span>
           </button>
-          <button class="research-card" type="button" data-full="./analytics-02-features-problems.png" data-title="Характеристики и проблемы пациента">
-            <span class="research-thumb"><img src="./analytics-02-features-problems-thumb.webp" alt="Таблица характеристик услуги и проблем пациента" loading="lazy"><span class="research-step">02 · EXCEL</span></span>
-            <span class="research-card-copy"><strong>Характеристики → проблемы</strong><small>Сопоставил факты о враче, имплантах, методиках, гарантии и цене со страхами пациента.</small></span>
+          <button class="research-card" type="button" data-full="./analytics-02-features-problems.png" data-title="Ранжирование характеристик" aria-label="Открыть: Ранжирование характеристик">
+            <span class="research-step">02 · EXCEL</span>
+            <span class="research-card-title">Ранжирование характеристик</span>
+            <span class="research-card-open">Открыть материал</span>
           </button>
-          <button class="research-card" type="button" data-full="./analytics-03-competitor-comparison.png" data-title="Сравнение Dentalis с конкурентами">
-            <span class="research-thumb"><img src="./analytics-03-competitor-comparison-thumb.webp" alt="Сравнение стоматологической клиники с конкурентами" loading="lazy"><span class="research-step">03 · EXCEL</span></span>
-            <span class="research-card-copy"><strong>Сравнение с конкурентами</strong><small>Отделил общие характеристики от реальных преимуществ и перевёл их в выгоды.</small></span>
+          <button class="research-card" type="button" data-full="./analytics-03-competitor-comparison.png" data-title="Преимущества" aria-label="Открыть: Преимущества">
+            <span class="research-step">03 · EXCEL</span>
+            <span class="research-card-title">Преимущества</span>
+            <span class="research-card-open">Открыть материал</span>
           </button>
-          <button class="research-card" type="button" data-full="./analytics-04-market-review.png" data-title="Анализ конкурентного поля стоматологий Челябинска">
-            <span class="research-thumb"><img src="./analytics-04-market-review-thumb.webp" alt="Таблица анализа стоматологических клиник Челябинска" loading="lazy"><span class="research-step">04 · EXCEL</span></span>
-            <span class="research-card-copy"><strong>Анализ конкурентного поля</strong><small>Сайты, посещаемость, ссылки, соцсети, охват, масштаб клиник и заметные рыночные игроки.</small></span>
+          <button class="research-card" type="button" data-full="./analytics-04-market-review.png" data-title="Анализ конкурентов" aria-label="Открыть: Анализ конкурентов">
+            <span class="research-step">04 · EXCEL</span>
+            <span class="research-card-title">Анализ конкурентов</span>
+            <span class="research-card-open">Открыть материал</span>
           </button>
         </div>
         <button class="research-arrow next" type="button" aria-label="Следующий материал">›</button>
       </div>
-      <div class="research-hint"><span class="desktop-hint">Наведите курсор на карточку — материал увеличится здесь же.</span><span class="mobile-hint">Листайте карточки. Коснитесь материала — откроется полноэкранный просмотр.</span><span>Исходные рабочие материалы</span></div>
+      <div class="research-hint"><span>Нажмите карточку — материал откроется здесь же. Нажмите ещё раз по материалу — он закроется.</span><span>Исходные рабочие материалы</span></div>
     </section>
 
     <div class="demo-shell">
@@ -188,9 +209,11 @@
       <article class="landing-demo">
         <section class="hero">
           <div class="landing-wrap hero-grid">
-            <div>
+            <div class="hero-heading">
               <p class="eyebrow">Имплантация зубов</p>
               <h2>Хотите импланты из Европы с пожизненной гарантией?</h2>
+            </div>
+            <div class="hero-copy">
               <p class="hero-offer">Установим оригинальные импланты <strong>Strauman с приживаемостью 99,8%</strong></p>
               <ul class="benefits">
                 <li>Имплантолог с Европейской сертификацией</li>
@@ -303,9 +326,7 @@
         <section class="section interview-bridge">
           <div class="landing-wrap interview-card">
             <div class="interview-copy">
-              <p class="eyebrow">Продолжение проекта</p>
               <h2>Интервью с имплантологом</h2>
-              <p>Тот же материал я развил в сценарий экспертного интервью: врач отвечает на вопросы, которые возникают у пациентов перед имплантацией.</p>
               <a class="interview-link" href="/intervyu-implantolog.html">Посмотреть сценарий интервью <span aria-hidden="true">→</span></a>
             </div>
             <a class="interview-still" href="/intervyu-implantolog.html" aria-label="Открыть сценарий интервью с имплантологом">
@@ -412,13 +433,9 @@
     </section>
   </main>
 
-
-  <div class="analytics-hover-preview" id="analytics-hover-preview" aria-hidden="true"><figure><img alt=""><figcaption></figcaption></figure></div>
-  <dialog class="analytics-modal" id="analytics-modal" aria-label="Просмотр аналитического материала">
-    <div class="analytics-modal-head"><div class="analytics-modal-title"></div><div class="analytics-modal-actions"><button class="analytics-icon-button analytics-zoom-out" type="button" aria-label="Уменьшить">−</button><button class="analytics-icon-button analytics-zoom-in" type="button" aria-label="Увеличить">+</button><button class="analytics-icon-button analytics-close" type="button" aria-label="Закрыть">×</button></div></div>
-    <div class="analytics-modal-stage"><div class="analytics-modal-canvas"><img class="analytics-modal-img" alt=""></div></div>
-    <div class="analytics-modal-foot"><button class="analytics-modal-prev" type="button" aria-label="Предыдущий материал">‹</button><div class="analytics-counter"></div><button class="analytics-modal-next" type="button" aria-label="Следующий материал">›</button></div>
-  </dialog>
+  <div class="analytics-click-preview" id="analytics-click-preview" aria-hidden="true" aria-label="Просмотр аналитического материала. Нажмите, чтобы закрыть.">
+    <figure><img alt=""><figcaption></figcaption></figure>
+  </div>
 
 
   <footer><div><span>© Евгений Пономарёв</span><span>Копирайтинг · B2B · FMCG</span></div></footer>
@@ -427,74 +444,44 @@
 
     const researchTrack=document.getElementById('research-track');
     const researchCards=[...document.querySelectorAll('.research-card')];
-    const hoverPreview=document.getElementById('analytics-hover-preview');
-    const hoverImg=hoverPreview?.querySelector('img');
-    const hoverCaption=hoverPreview?.querySelector('figcaption');
+    const analyticsPreview=document.getElementById('analytics-click-preview');
+    const previewImg=analyticsPreview?.querySelector('img');
+    const previewCaption=analyticsPreview?.querySelector('figcaption');
     const researchSection=document.querySelector('.research-section');
     const researchPrev=researchSection?.querySelector('.research-arrow.prev');
     const researchNext=researchSection?.querySelector('.research-arrow.next');
-    const isTouchResearch=()=>matchMedia('(hover:none),(pointer:coarse),(max-width:680px)').matches;
-    const scrollResearch=(dir)=>researchTrack?.scrollBy({left:dir*(researchTrack.clientWidth*.74),behavior:'smooth'});
+    const researchStep=()=>{const card=researchCards[0];return card?card.getBoundingClientRect().width+12:196};
+    const scrollResearch=(dir)=>researchTrack?.scrollBy({left:dir*researchStep(),behavior:'smooth'});
+    function updateResearchArrows(){
+      if(!researchTrack)return;
+      const max=Math.max(0,researchTrack.scrollWidth-researchTrack.clientWidth);
+      if(researchPrev)researchPrev.disabled=researchTrack.scrollLeft<=2;
+      if(researchNext)researchNext.disabled=researchTrack.scrollLeft>=max-2;
+    }
     researchPrev?.addEventListener('click',()=>scrollResearch(-1));
     researchNext?.addEventListener('click',()=>scrollResearch(1));
-    researchCards.forEach((card,index)=>{
-      card.addEventListener('mouseenter',()=>{
-        if(isTouchResearch()||!hoverPreview)return;
-        hoverImg.src=card.dataset.full;hoverImg.alt=card.dataset.title||'';hoverCaption.textContent=card.dataset.title||'';hoverPreview.classList.add('is-open');
-      });
-      card.addEventListener('mouseleave',()=>hoverPreview?.classList.remove('is-open'));
-      card.addEventListener('focus',()=>{if(!isTouchResearch()){hoverImg.src=card.dataset.full;hoverImg.alt=card.dataset.title||'';hoverCaption.textContent=card.dataset.title||'';hoverPreview?.classList.add('is-open')}});
-      card.addEventListener('blur',()=>hoverPreview?.classList.remove('is-open'));
-      card.addEventListener('click',()=>{if(isTouchResearch())openAnalytics(index)});
-    });
-
-    const analyticsModal=document.getElementById('analytics-modal');
-    const modalStage=analyticsModal?.querySelector('.analytics-modal-stage');
-    const modalImg=analyticsModal?.querySelector('.analytics-modal-img');
-    const modalTitle=analyticsModal?.querySelector('.analytics-modal-title');
-    const modalCounter=analyticsModal?.querySelector('.analytics-counter');
-    let analyticsIndex=0,analyticsScale=1,analyticsBaseWidth=0,pinchStartDistance=0,pinchStartScale=1,touchStartX=0,touchStartY=0;
-    function fitAnalyticsImage(){
-      if(!modalImg||!modalStage||!modalImg.naturalWidth)return;
-      analyticsBaseWidth=Math.min(modalImg.naturalWidth,Math.max(280,modalStage.clientWidth-32));
-      analyticsScale=1;applyAnalyticsScale();modalStage.scrollTo(0,0);
+    researchTrack?.addEventListener('scroll',updateResearchArrows,{passive:true});
+    addEventListener('resize',updateResearchArrows);
+    function openAnalyticsPreview(index){
+      const card=researchCards[index];
+      if(!card||!analyticsPreview||!previewImg)return;
+      previewImg.src=card.dataset.full||'';
+      previewImg.alt=card.dataset.title||'';
+      if(previewCaption)previewCaption.textContent=card.dataset.title||'';
+      analyticsPreview.classList.add('is-open');
+      analyticsPreview.setAttribute('aria-hidden','false');
+      document.body.style.overflow='hidden';
     }
-    function applyAnalyticsScale(){
-      if(!modalImg||!analyticsBaseWidth)return;
-      analyticsScale=Math.max(1,Math.min(4,analyticsScale));
-      modalImg.style.width=(analyticsBaseWidth*analyticsScale)+'px';
+    function closeAnalyticsPreview(){
+      if(!analyticsPreview)return;
+      analyticsPreview.classList.remove('is-open');
+      analyticsPreview.setAttribute('aria-hidden','true');
+      document.body.style.overflow='';
     }
-    function showAnalytics(index){
-      analyticsIndex=(index+researchCards.length)%researchCards.length;
-      const card=researchCards[analyticsIndex];
-      modalTitle.textContent=card.dataset.title||'';
-      modalCounter.textContent=(analyticsIndex+1)+' / '+researchCards.length+' · разведите пальцы для увеличения';
-      modalImg.alt=card.dataset.title||'';
-      modalImg.onload=fitAnalyticsImage;
-      modalImg.src=card.dataset.full;
-    }
-    function openAnalytics(index){
-      if(!analyticsModal?.showModal)return;
-      showAnalytics(index);analyticsModal.showModal();document.body.style.overflow='hidden';
-    }
-    function closeAnalytics(){analyticsModal?.close();document.body.style.overflow='';}
-    analyticsModal?.querySelector('.analytics-close')?.addEventListener('click',closeAnalytics);
-    analyticsModal?.querySelector('.analytics-modal-prev')?.addEventListener('click',()=>showAnalytics(analyticsIndex-1));
-    analyticsModal?.querySelector('.analytics-modal-next')?.addEventListener('click',()=>showAnalytics(analyticsIndex+1));
-    analyticsModal?.querySelector('.analytics-zoom-in')?.addEventListener('click',()=>{analyticsScale+=.5;applyAnalyticsScale()});
-    analyticsModal?.querySelector('.analytics-zoom-out')?.addEventListener('click',()=>{analyticsScale-=.5;applyAnalyticsScale()});
-    analyticsModal?.addEventListener('cancel',e=>{e.preventDefault();closeAnalytics()});
-    modalStage?.addEventListener('touchstart',e=>{
-      if(e.touches.length===2){pinchStartDistance=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);pinchStartScale=analyticsScale}
-      else if(e.touches.length===1){touchStartX=e.touches[0].clientX;touchStartY=e.touches[0].clientY}
-    },{passive:true});
-    modalStage?.addEventListener('touchmove',e=>{
-      if(e.touches.length===2&&pinchStartDistance){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);analyticsScale=pinchStartScale*(d/pinchStartDistance);applyAnalyticsScale()}
-    },{passive:true});
-    modalStage?.addEventListener('touchend',e=>{
-      if(e.touches.length===0&&analyticsScale<=1.05&&e.changedTouches.length){const dx=e.changedTouches[0].clientX-touchStartX,dy=e.changedTouches[0].clientY-touchStartY;if(Math.abs(dx)>75&&Math.abs(dx)>Math.abs(dy)*1.2)showAnalytics(analyticsIndex+(dx<0?1:-1))}
-      if(e.touches.length<2)pinchStartDistance=0;
-    },{passive:true});
+    researchCards.forEach((card,index)=>card.addEventListener('click',()=>openAnalyticsPreview(index)));
+    analyticsPreview?.addEventListener('click',closeAnalyticsPreview);
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&analyticsPreview?.classList.contains('is-open'))closeAnalyticsPreview()});
+    updateResearchArrows();
 
     const progress=document.querySelector('.reading-progress');
     const topButton=document.querySelector('.back-to-top');
