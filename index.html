@@ -95,11 +95,21 @@
   .certificate-arrow.prev{left:0}.certificate-arrow.next{right:0}
   .certificate-arrow:disabled{cursor:default;opacity:.3}
   .certificate-arrow:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
-  .certificate-click-preview{position:fixed;z-index:300;inset:0;display:flex;align-items:center;justify-content:center;padding:6vh 4vw;visibility:hidden;background:rgba(4,18,24,.84);opacity:0;pointer-events:none;backdrop-filter:blur(5px);cursor:zoom-out;transition:opacity .14s ease,visibility .14s ease}
+  .certificate-click-preview{position:fixed;z-index:300;inset:0;display:flex;align-items:center;justify-content:center;padding:5vh 4vw;visibility:hidden;background:rgba(4,18,24,.84);opacity:0;pointer-events:none;backdrop-filter:blur(5px);cursor:zoom-out;transition:opacity .14s ease,visibility .14s ease}
   .certificate-click-preview.is-open{visibility:visible;opacity:1;pointer-events:auto}
-  .certificate-click-preview figure{max-width:94vw;max-height:90vh;margin:0;padding:10px;overflow:auto;border:1px solid rgba(255,255,255,.2);border-radius:13px;background:#fff;box-shadow:0 30px 90px rgba(0,0,0,.42)}
-  .certificate-click-preview img{display:block;max-width:92vw;max-height:82vh;width:auto;height:auto;object-fit:contain;user-select:none;-webkit-user-drag:none}
-  .certificate-click-preview figcaption{padding:9px 4px 1px;color:#355159;font-size:.79rem;font-weight:700}
+  .certificate-preview-panel{display:flex;flex-direction:column;width:min(94vw,1400px);height:min(90vh,980px);min-height:280px;overflow:hidden;border:1px solid rgba(255,255,255,.2);border-radius:13px;background:#fff;box-shadow:0 30px 90px rgba(0,0,0,.42);cursor:default}
+  .certificate-preview-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:7px;min-height:46px;padding:7px 9px;border-bottom:1px solid #dce6e7;background:#f5f8f8}
+  .certificate-preview-hint{margin-right:auto;padding-left:4px;color:#53696e;font-size:.72rem;font-weight:650}
+  .certificate-preview-toolbar button{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:32px;padding:0 9px;border:1px solid #c6d4d6;border-radius:7px;background:#fff;color:var(--ink);font:700 .82rem/1 Arial,sans-serif;cursor:pointer}
+  .certificate-preview-toolbar button:hover,.certificate-preview-toolbar button:focus-visible{border-color:var(--teal);outline:none;color:var(--teal)}
+  .certificate-preview-toolbar button:disabled{cursor:default;opacity:.38}
+  .certificate-preview-toolbar .certificate-preview-close{margin-left:5px;font-size:1.18rem}
+  .certificate-click-preview figure{position:relative;flex:1;min-height:0;margin:0;padding:12px;overflow:auto;overscroll-behavior:contain;background:#fff}
+  .certificate-click-preview figure::before{position:absolute;inset:0;display:none;place-items:center;color:#53696e;font-size:.86rem;font-weight:700;content:"Загрузка…"}
+  .certificate-click-preview.is-loading figure::before{display:grid}
+  .certificate-click-preview img{display:block;max-width:100%;max-height:calc(90vh - 104px);width:auto;height:auto;margin:auto;object-fit:contain;user-select:none;-webkit-user-drag:none}
+  .certificate-click-preview.is-loading img{visibility:hidden}
+  .certificate-click-preview figcaption{padding:9px 12px 11px;border-top:1px solid #e2e9ea;color:#355159;font-size:.79rem;font-weight:700}
   @media(hover:hover) and (pointer:fine){
     .certificate-card:hover{transform:translateY(-2px);border-color:rgba(217,183,126,.95);background:linear-gradient(145deg,#0a2434,#0c4650);box-shadow:0 12px 25px rgba(8,27,42,.2),0 0 0 1px rgba(217,183,126,.1)}
     .certificate-arrow:not(:disabled):hover{border-color:var(--gold);background:var(--ink);color:var(--gold);transform:scale(1.06)}
@@ -114,8 +124,10 @@
     .certificate-track{width:100%;min-width:0;max-width:100%;overflow-x:scroll;padding-right:4px;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y}
     .certificate-arrow{display:none}
     .certificate-click-preview{padding:12px;align-items:center}
-    .certificate-click-preview figure{max-width:100%;max-height:calc(100dvh - 24px);padding:8px;-webkit-overflow-scrolling:touch;touch-action:pinch-zoom}
-    .certificate-click-preview img{max-width:calc(100vw - 42px);max-height:calc(100dvh - 92px);touch-action:pinch-zoom}
+    .certificate-preview-panel{width:100%;height:calc(100dvh - 24px);min-height:0}
+    .certificate-preview-hint,.certificate-preview-zoom{display:none!important}
+    .certificate-click-preview figure{padding:8px;-webkit-overflow-scrolling:touch;touch-action:pinch-zoom}
+    .certificate-click-preview img{max-width:calc(100vw - 42px);max-height:calc(100dvh - 110px);touch-action:pinch-zoom}
   }
   @media(prefers-reduced-motion:reduce){.certificate-track{scroll-behavior:auto}.certificate-card,.certificate-arrow,.certificate-click-preview{transition:none}.certificate-card.is-current,.certificate-card:hover,.certificate-card:focus-visible{transform:none}}
 </style>
@@ -266,43 +278,173 @@
 
     var cards = Array.prototype.slice.call(track.querySelectorAll('.certificate-card'));
     var preview = document.createElement('div');
+    var previewPanel = document.createElement('div');
+    var previewToolbar = document.createElement('div');
+    var previewHint = document.createElement('span');
+    var previewZoomOut = document.createElement('button');
+    var previewZoomReset = document.createElement('button');
+    var previewZoomIn = document.createElement('button');
+    var previewClose = document.createElement('button');
     var previewFigure = document.createElement('figure');
     var previewImage = document.createElement('img');
     var previewCaption = document.createElement('figcaption');
     var framePending = false;
+    var previewLoadId = 0;
+    var previewZoom = 1;
+    var previewBaseWidth = 0;
 
     preview.className = 'certificate-click-preview';
     preview.id = 'certificate-click-preview';
     preview.setAttribute('aria-hidden', 'true');
-    preview.setAttribute('aria-label', 'Просмотр сертификата. Нажмите, чтобы закрыть.');
+    preview.setAttribute('aria-label', 'Просмотр сертификата');
+    previewPanel.className = 'certificate-preview-panel';
+    previewToolbar.className = 'certificate-preview-toolbar';
+    previewHint.className = 'certificate-preview-hint';
+    previewHint.textContent = 'Двойной щелчок или +/− — масштаб';
+    previewZoomOut.className = 'certificate-preview-zoom certificate-preview-zoom-out';
+    previewZoomOut.type = 'button';
+    previewZoomOut.textContent = '−';
+    previewZoomOut.setAttribute('aria-label', 'Уменьшить сертификат');
+    previewZoomReset.className = 'certificate-preview-zoom certificate-preview-zoom-reset';
+    previewZoomReset.type = 'button';
+    previewZoomReset.textContent = '100%';
+    previewZoomReset.setAttribute('aria-label', 'Вернуть исходный масштаб');
+    previewZoomIn.className = 'certificate-preview-zoom certificate-preview-zoom-in';
+    previewZoomIn.type = 'button';
+    previewZoomIn.textContent = '+';
+    previewZoomIn.setAttribute('aria-label', 'Увеличить сертификат');
+    previewClose.className = 'certificate-preview-close';
+    previewClose.type = 'button';
+    previewClose.textContent = '×';
+    previewClose.setAttribute('aria-label', 'Закрыть сертификат');
     previewImage.alt = '';
+    previewToolbar.appendChild(previewHint);
+    previewToolbar.appendChild(previewZoomOut);
+    previewToolbar.appendChild(previewZoomReset);
+    previewToolbar.appendChild(previewZoomIn);
+    previewToolbar.appendChild(previewClose);
     previewFigure.appendChild(previewImage);
     previewFigure.appendChild(previewCaption);
-    preview.appendChild(previewFigure);
+    previewPanel.appendChild(previewToolbar);
+    previewPanel.appendChild(previewFigure);
+    preview.appendChild(previewPanel);
     document.body.appendChild(preview);
 
+    function updateCertificateZoomControls() {
+      previewZoomOut.disabled = previewZoom <= 1;
+      previewZoomIn.disabled = previewZoom >= 3;
+      previewZoomReset.textContent = Math.round(previewZoom * 100) + '%';
+    }
+
+    function setCertificateZoom(nextZoom) {
+      if (!previewBaseWidth || preview.classList.contains('is-loading')) return;
+      var oldWidth = Math.max(previewFigure.scrollWidth, 1);
+      var oldHeight = Math.max(previewFigure.scrollHeight, 1);
+      var centerX = (previewFigure.scrollLeft + previewFigure.clientWidth / 2) / oldWidth;
+      var centerY = (previewFigure.scrollTop + previewFigure.clientHeight / 2) / oldHeight;
+
+      previewZoom = Math.max(1, Math.min(3, Math.round(nextZoom * 4) / 4));
+      previewImage.style.width = Math.round(previewBaseWidth * previewZoom) + 'px';
+      previewImage.style.maxWidth = 'none';
+      previewImage.style.maxHeight = 'none';
+      previewImage.style.cursor = previewZoom > 1 ? 'zoom-out' : 'zoom-in';
+      updateCertificateZoomControls();
+
+      requestAnimationFrame(function () {
+        previewFigure.scrollLeft = Math.max(0, centerX * previewFigure.scrollWidth - previewFigure.clientWidth / 2);
+        previewFigure.scrollTop = Math.max(0, centerY * previewFigure.scrollHeight - previewFigure.clientHeight / 2);
+      });
+    }
+
+    function resetCertificateZoom() {
+      previewZoom = 1;
+      previewBaseWidth = 0;
+      previewImage.style.width = '';
+      previewImage.style.maxWidth = '';
+      previewImage.style.maxHeight = '';
+      previewImage.style.cursor = 'zoom-in';
+      previewFigure.scrollLeft = 0;
+      previewFigure.scrollTop = 0;
+      updateCertificateZoomControls();
+    }
+
     function openCertificate(card) {
-      previewImage.src = card.dataset.full || '';
-      previewImage.alt = card.dataset.title || '';
-      previewCaption.textContent = card.dataset.title || '';
+      var source = card.dataset.full || '';
+      var title = card.dataset.title || '';
+      var loadId = ++previewLoadId;
+      var loader = new Image();
+
+      resetCertificateZoom();
+      previewImage.removeAttribute('src');
+      previewImage.alt = '';
+      previewCaption.textContent = 'Загрузка: ' + title;
+      preview.classList.add('is-loading');
       preview.classList.add('is-open');
       preview.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
+
+      loader.onload = function () {
+        if (loadId !== previewLoadId || !preview.classList.contains('is-open')) return;
+        previewImage.src = source;
+        previewImage.alt = title;
+        previewCaption.textContent = title;
+        requestAnimationFrame(function () {
+          if (loadId !== previewLoadId || !preview.classList.contains('is-open')) return;
+          previewBaseWidth = previewImage.getBoundingClientRect().width || Math.min(loader.naturalWidth || 1200, Math.max(previewFigure.clientWidth - 24, 320));
+          previewImage.style.width = Math.round(previewBaseWidth) + 'px';
+          previewImage.style.maxWidth = 'none';
+          previewImage.style.maxHeight = 'none';
+          preview.classList.remove('is-loading');
+          updateCertificateZoomControls();
+        });
+      };
+      loader.onerror = function () {
+        if (loadId !== previewLoadId) return;
+        preview.classList.remove('is-loading');
+        previewCaption.textContent = 'Не удалось загрузить сертификат';
+      };
+      loader.src = source;
     }
 
     function closeCertificate() {
+      previewLoadId += 1;
       preview.classList.remove('is-open');
+      preview.classList.remove('is-loading');
       preview.setAttribute('aria-hidden', 'true');
+      previewImage.removeAttribute('src');
+      previewImage.alt = '';
+      previewCaption.textContent = '';
+      resetCertificateZoom();
       document.body.style.overflow = '';
     }
 
     cards.forEach(function (card) {
       card.addEventListener('click', function () { openCertificate(card); });
     });
-    preview.addEventListener('click', closeCertificate);
+    preview.addEventListener('click', function (event) {
+      if (event.target === preview) closeCertificate();
+    });
+    previewClose.addEventListener('click', closeCertificate);
+    previewZoomOut.addEventListener('click', function () { setCertificateZoom(previewZoom - .25); });
+    previewZoomReset.addEventListener('click', function () { setCertificateZoom(1); });
+    previewZoomIn.addEventListener('click', function () { setCertificateZoom(previewZoom + .25); });
+    previewFigure.addEventListener('dblclick', function (event) {
+      if (event.target !== previewImage) return;
+      event.preventDefault();
+      setCertificateZoom(previewZoom > 1 ? 1 : 1.75);
+    });
+    previewFigure.addEventListener('wheel', function (event) {
+      if (!(event.ctrlKey || event.metaKey)) return;
+      event.preventDefault();
+      setCertificateZoom(previewZoom + (event.deltaY < 0 ? .25 : -.25));
+    }, { passive: false });
+    previewImage.addEventListener('click', function () {
+      if (matchMedia('(hover:none), (pointer:coarse)').matches) closeCertificate();
+    });
     document.addEventListener('keydown', function (event) {
       if (event.key === 'Escape' && preview.classList.contains('is-open')) closeCertificate();
     });
+    updateCertificateZoomControls();
 
     function updateCarousel() {
       var trackRect = track.getBoundingClientRect();

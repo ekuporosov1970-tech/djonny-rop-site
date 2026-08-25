@@ -118,11 +118,21 @@
     .research-arrow:not(:disabled):hover{border-color:var(--gold);background:var(--ink);color:var(--gold);transform:scale(1.06)}
     .research-arrow:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
     .research-hint{display:flex;align-items:center;justify-content:space-between;gap:18px;max-width:780px;margin:11px auto 0;color:#6b7f82;font-size:.76rem}
-    .analytics-click-preview{position:fixed;z-index:300;inset:0;display:flex;align-items:center;justify-content:center;padding:6vh 4vw;visibility:hidden;background:rgba(4,18,24,.84);opacity:0;pointer-events:none;backdrop-filter:blur(5px);cursor:zoom-out;transition:opacity .14s ease,visibility .14s ease}
+    .analytics-click-preview{position:fixed;z-index:300;inset:0;display:flex;align-items:center;justify-content:center;padding:5vh 4vw;visibility:hidden;background:rgba(4,18,24,.84);opacity:0;pointer-events:none;backdrop-filter:blur(5px);cursor:zoom-out;transition:opacity .14s ease,visibility .14s ease}
     .analytics-click-preview.is-open{visibility:visible;opacity:1;pointer-events:auto}
-    .analytics-click-preview figure{max-width:94vw;max-height:90vh;margin:0;padding:10px;overflow:auto;border:1px solid rgba(255,255,255,.2);border-radius:13px;background:#fff;box-shadow:0 30px 90px rgba(0,0,0,.42)}
-    .analytics-click-preview img{display:block;max-width:92vw;max-height:82vh;width:auto;height:auto;object-fit:contain;user-select:none;-webkit-user-drag:none}
-    .analytics-click-preview figcaption{padding:9px 4px 1px;color:#355159;font-size:.79rem;font-weight:700}
+    .analytics-preview-panel{display:flex;flex-direction:column;width:min(94vw,1400px);height:min(90vh,980px);min-height:280px;overflow:hidden;border:1px solid rgba(255,255,255,.2);border-radius:13px;background:#fff;box-shadow:0 30px 90px rgba(0,0,0,.42);cursor:default}
+    .analytics-preview-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:7px;min-height:46px;padding:7px 9px;border-bottom:1px solid #dce6e7;background:#f5f8f8}
+    .analytics-preview-hint{margin-right:auto;padding-left:4px;color:#53696e;font-size:.72rem;font-weight:650}
+    .analytics-preview-toolbar button{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:32px;padding:0 9px;border:1px solid #c6d4d6;border-radius:7px;background:#fff;color:var(--ink);font:700 .82rem/1 Arial,sans-serif;cursor:pointer}
+    .analytics-preview-toolbar button:hover,.analytics-preview-toolbar button:focus-visible{border-color:var(--teal);outline:none;color:var(--teal)}
+    .analytics-preview-toolbar button:disabled{cursor:default;opacity:.38}
+    .analytics-preview-toolbar .analytics-preview-close{margin-left:5px;font-size:1.18rem}
+    .analytics-click-preview figure{position:relative;flex:1;min-height:0;margin:0;padding:12px;overflow:auto;overscroll-behavior:contain;background:#fff}
+    .analytics-click-preview figure::before{position:absolute;inset:0;display:none;place-items:center;color:#53696e;font-size:.86rem;font-weight:700;content:"Загрузка…"}
+    .analytics-click-preview.is-loading figure::before{display:grid}
+    .analytics-click-preview img{display:block;max-width:100%;max-height:calc(90vh - 104px);width:auto;height:auto;margin:auto;object-fit:contain;user-select:none;-webkit-user-drag:none}
+    .analytics-click-preview.is-loading img{visibility:hidden}
+    .analytics-click-preview figcaption{padding:9px 12px 11px;border-top:1px solid #e2e9ea;color:#355159;font-size:.79rem;font-weight:700}
     @media(min-width:981px){
       #consultation .doctor-facts{position:relative;left:-22px;width:calc(100% + 22px)}
       .clinic-risk-head{grid-template-columns:1fr;gap:20px}
@@ -146,8 +156,10 @@
       .research-track{width:100%;min-width:0;max-width:100%;overflow-x:scroll;padding-right:4px;-webkit-overflow-scrolling:touch}
       .research-arrow{display:none}.research-hint{flex-direction:column;align-items:flex-start;gap:6px;font-size:.72rem}
       .analytics-click-preview{padding:12px;align-items:center}
-      .analytics-click-preview figure{max-width:100%;max-height:calc(100dvh - 24px);padding:8px;-webkit-overflow-scrolling:touch;touch-action:pinch-zoom}
-      .analytics-click-preview img{max-width:calc(100vw - 42px);max-height:calc(100dvh - 92px);touch-action:pinch-zoom}
+      .analytics-preview-panel{width:100%;height:calc(100dvh - 24px);min-height:0}
+      .analytics-preview-hint,.analytics-preview-zoom{display:none!important}
+      .analytics-click-preview figure{padding:8px;-webkit-overflow-scrolling:touch;touch-action:pinch-zoom}
+      .analytics-click-preview img{max-width:calc(100vw - 42px);max-height:calc(100dvh - 110px);touch-action:pinch-zoom}
     }
     @media(prefers-reduced-motion:reduce){.research-track{scroll-behavior:auto}.research-card,.research-arrow,.analytics-click-preview{transition:none}.research-card:hover,.research-card:focus-visible{transform:none}}
 
@@ -436,8 +448,17 @@
     </section>
   </main>
 
-  <div class="analytics-click-preview" id="analytics-click-preview" aria-hidden="true" aria-label="Просмотр аналитического материала. Нажмите, чтобы закрыть.">
-    <figure><img alt=""><figcaption></figcaption></figure>
+  <div class="analytics-click-preview" id="analytics-click-preview" aria-hidden="true" aria-label="Просмотр аналитического материала">
+    <div class="analytics-preview-panel">
+      <div class="analytics-preview-toolbar">
+        <span class="analytics-preview-hint">Двойной щелчок или +/− — масштаб</span>
+        <button class="analytics-preview-zoom analytics-preview-zoom-out" type="button" aria-label="Уменьшить материал">−</button>
+        <button class="analytics-preview-zoom analytics-preview-zoom-reset" type="button" aria-label="Вернуть исходный масштаб">100%</button>
+        <button class="analytics-preview-zoom analytics-preview-zoom-in" type="button" aria-label="Увеличить материал">+</button>
+        <button class="analytics-preview-close" type="button" aria-label="Закрыть материал">×</button>
+      </div>
+      <figure><img alt=""><figcaption></figcaption></figure>
+    </div>
   </div>
 
 
@@ -450,9 +471,17 @@
     const analyticsPreview=document.getElementById('analytics-click-preview');
     const previewImg=analyticsPreview?.querySelector('img');
     const previewCaption=analyticsPreview?.querySelector('figcaption');
+    const previewFigure=analyticsPreview?.querySelector('figure');
+    const previewZoomOut=analyticsPreview?.querySelector('.analytics-preview-zoom-out');
+    const previewZoomReset=analyticsPreview?.querySelector('.analytics-preview-zoom-reset');
+    const previewZoomIn=analyticsPreview?.querySelector('.analytics-preview-zoom-in');
+    const previewClose=analyticsPreview?.querySelector('.analytics-preview-close');
     const researchSection=document.querySelector('.research-section');
     const researchPrev=researchSection?.querySelector('.research-arrow.prev');
     const researchNext=researchSection?.querySelector('.research-arrow.next');
+    let previewLoadId=0;
+    let previewZoom=1;
+    let previewBaseWidth=0;
     const researchStep=()=>{const card=researchCards[0];return card?card.getBoundingClientRect().width+12:196};
     const scrollResearch=(dir)=>researchTrack?.scrollBy({left:dir*researchStep(),behavior:'smooth'});
     function updateResearchArrows(){
@@ -465,25 +494,110 @@
     researchNext?.addEventListener('click',()=>scrollResearch(1));
     researchTrack?.addEventListener('scroll',updateResearchArrows,{passive:true});
     addEventListener('resize',updateResearchArrows);
+    function updatePreviewZoomControls(){
+      if(previewZoomOut)previewZoomOut.disabled=previewZoom<=1;
+      if(previewZoomIn)previewZoomIn.disabled=previewZoom>=3;
+      if(previewZoomReset)previewZoomReset.textContent=Math.round(previewZoom*100)+'%';
+    }
+    function setPreviewZoom(nextZoom){
+      if(!previewImg||!previewFigure||!previewBaseWidth||analyticsPreview?.classList.contains('is-loading'))return;
+      const oldWidth=Math.max(previewFigure.scrollWidth,1);
+      const oldHeight=Math.max(previewFigure.scrollHeight,1);
+      const centerX=(previewFigure.scrollLeft+previewFigure.clientWidth/2)/oldWidth;
+      const centerY=(previewFigure.scrollTop+previewFigure.clientHeight/2)/oldHeight;
+      previewZoom=Math.max(1,Math.min(3,Math.round(nextZoom*4)/4));
+      previewImg.style.width=Math.round(previewBaseWidth*previewZoom)+'px';
+      previewImg.style.maxWidth='none';
+      previewImg.style.maxHeight='none';
+      previewImg.style.cursor=previewZoom>1?'zoom-out':'zoom-in';
+      updatePreviewZoomControls();
+      requestAnimationFrame(()=>{
+        previewFigure.scrollLeft=Math.max(0,centerX*previewFigure.scrollWidth-previewFigure.clientWidth/2);
+        previewFigure.scrollTop=Math.max(0,centerY*previewFigure.scrollHeight-previewFigure.clientHeight/2);
+      });
+    }
+    function resetPreviewZoom(){
+      previewZoom=1;
+      previewBaseWidth=0;
+      if(previewImg){
+        previewImg.style.width='';
+        previewImg.style.maxWidth='';
+        previewImg.style.maxHeight='';
+        previewImg.style.cursor='zoom-in';
+      }
+      if(previewFigure){previewFigure.scrollLeft=0;previewFigure.scrollTop=0}
+      updatePreviewZoomControls();
+    }
     function openAnalyticsPreview(index){
       const card=researchCards[index];
       if(!card||!analyticsPreview||!previewImg)return;
-      previewImg.src=card.dataset.full||'';
-      previewImg.alt=card.dataset.title||'';
-      if(previewCaption)previewCaption.textContent=card.dataset.title||'';
+      const source=card.dataset.full||'';
+      const title=card.dataset.title||'';
+      const loadId=++previewLoadId;
+      const loader=new Image();
+      resetPreviewZoom();
+      previewImg.removeAttribute('src');
+      previewImg.alt='';
+      if(previewCaption)previewCaption.textContent='Загрузка: '+title;
+      analyticsPreview.classList.add('is-loading');
       analyticsPreview.classList.add('is-open');
       analyticsPreview.setAttribute('aria-hidden','false');
       document.body.style.overflow='hidden';
+      loader.onload=()=>{
+        if(loadId!==previewLoadId||!analyticsPreview.classList.contains('is-open'))return;
+        previewImg.src=source;
+        previewImg.alt=title;
+        if(previewCaption)previewCaption.textContent=title;
+        requestAnimationFrame(()=>{
+          if(loadId!==previewLoadId||!analyticsPreview.classList.contains('is-open'))return;
+          previewBaseWidth=previewImg.getBoundingClientRect().width||Math.min(loader.naturalWidth||1200,Math.max((previewFigure?.clientWidth||1200)-24,320));
+          previewImg.style.width=Math.round(previewBaseWidth)+'px';
+          previewImg.style.maxWidth='none';
+          previewImg.style.maxHeight='none';
+          analyticsPreview.classList.remove('is-loading');
+          updatePreviewZoomControls();
+        });
+      };
+      loader.onerror=()=>{
+        if(loadId!==previewLoadId)return;
+        analyticsPreview.classList.remove('is-loading');
+        if(previewCaption)previewCaption.textContent='Не удалось загрузить материал';
+      };
+      loader.src=source;
     }
     function closeAnalyticsPreview(){
       if(!analyticsPreview)return;
+      previewLoadId+=1;
       analyticsPreview.classList.remove('is-open');
+      analyticsPreview.classList.remove('is-loading');
       analyticsPreview.setAttribute('aria-hidden','true');
+      previewImg?.removeAttribute('src');
+      if(previewImg)previewImg.alt='';
+      if(previewCaption)previewCaption.textContent='';
+      resetPreviewZoom();
       document.body.style.overflow='';
     }
     researchCards.forEach((card,index)=>card.addEventListener('click',()=>openAnalyticsPreview(index)));
-    analyticsPreview?.addEventListener('click',closeAnalyticsPreview);
+    analyticsPreview?.addEventListener('click',event=>{if(event.target===analyticsPreview)closeAnalyticsPreview()});
+    previewClose?.addEventListener('click',closeAnalyticsPreview);
+    previewZoomOut?.addEventListener('click',()=>setPreviewZoom(previewZoom-.25));
+    previewZoomReset?.addEventListener('click',()=>setPreviewZoom(1));
+    previewZoomIn?.addEventListener('click',()=>setPreviewZoom(previewZoom+.25));
+    previewFigure?.addEventListener('dblclick',event=>{
+      if(event.target!==previewImg)return;
+      event.preventDefault();
+      setPreviewZoom(previewZoom>1?1:1.75);
+    });
+    previewFigure?.addEventListener('wheel',event=>{
+      if(!(event.ctrlKey||event.metaKey))return;
+      event.preventDefault();
+      setPreviewZoom(previewZoom+(event.deltaY<0 ? .25 : -.25));
+    },{passive:false});
+    previewImg?.addEventListener('click',()=>{
+      if(matchMedia('(hover:none), (pointer:coarse)').matches)closeAnalyticsPreview();
+    });
     document.addEventListener('keydown',event=>{if(event.key==='Escape'&&analyticsPreview?.classList.contains('is-open'))closeAnalyticsPreview()});
+    updatePreviewZoomControls();
     updateResearchArrows();
 
     const progress=document.querySelector('.reading-progress');
