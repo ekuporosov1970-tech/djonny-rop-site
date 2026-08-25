@@ -84,7 +84,7 @@
   .certificates{position:relative;margin:0 0 23px;padding:0 38px}
   .certificate-track{display:flex;gap:12px;overflow-x:auto;padding:8px 4px 15px;scroll-behavior:smooth;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-inline:contain;touch-action:pan-x pan-y}
   .certificate-track::-webkit-scrollbar{display:none}
-  .certificate-card{position:relative;display:flex;flex:0 0 184px;flex-direction:column;justify-content:space-between;height:140px;min-height:140px;padding:15px 14px 13px;overflow:hidden;border:1px solid rgba(217,183,126,.46);border-radius:10px;background:linear-gradient(145deg,#081b2a,#0a3340);color:var(--ivory);box-shadow:0 7px 18px rgba(8,27,42,.1);scroll-snap-align:center;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease,background-color .2s ease}
+  .certificate-card{position:relative;display:flex;flex:0 0 184px;flex-direction:column;justify-content:space-between;height:140px;min-height:140px;padding:15px 14px 13px;overflow:hidden;border:1px solid rgba(217,183,126,.46);border-radius:10px;background:linear-gradient(145deg,#081b2a,#0a3340);color:var(--ivory);font:inherit;text-align:left;box-shadow:0 7px 18px rgba(8,27,42,.1);scroll-snap-align:center;cursor:pointer;appearance:none;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease,background-color .2s ease}
   .certificate-card::before{position:absolute;top:-26px;right:-21px;width:70px;height:52px;border-bottom:1px solid rgba(34,166,161,.48);background:rgba(34,166,161,.09);content:"";transform:rotate(-34deg)}
   .certificate-label{position:relative;color:var(--gold);font-size:.61rem;font-weight:780;letter-spacing:.12em;text-transform:uppercase}
   .certificate-title{position:relative;margin:8px 0;color:var(--ivory);font-size:.84rem;font-weight:720;line-height:1.24}
@@ -95,6 +95,11 @@
   .certificate-arrow.prev{left:0}.certificate-arrow.next{right:0}
   .certificate-arrow:disabled{cursor:default;opacity:.3}
   .certificate-arrow:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+  .certificate-click-preview{position:fixed;z-index:300;inset:0;display:flex;align-items:center;justify-content:center;padding:6vh 4vw;visibility:hidden;background:rgba(4,18,24,.84);opacity:0;pointer-events:none;backdrop-filter:blur(5px);cursor:zoom-out;transition:opacity .14s ease,visibility .14s ease}
+  .certificate-click-preview.is-open{visibility:visible;opacity:1;pointer-events:auto}
+  .certificate-click-preview figure{max-width:94vw;max-height:90vh;margin:0;padding:10px;overflow:auto;border:1px solid rgba(255,255,255,.2);border-radius:13px;background:#fff;box-shadow:0 30px 90px rgba(0,0,0,.42)}
+  .certificate-click-preview img{display:block;max-width:92vw;max-height:82vh;width:auto;height:auto;object-fit:contain;user-select:none;-webkit-user-drag:none}
+  .certificate-click-preview figcaption{padding:9px 4px 1px;color:#355159;font-size:.79rem;font-weight:700}
   @media(hover:hover) and (pointer:fine){
     .certificate-card:hover{transform:translateY(-2px);border-color:rgba(217,183,126,.95);background:linear-gradient(145deg,#0a2434,#0c4650);box-shadow:0 12px 25px rgba(8,27,42,.2),0 0 0 1px rgba(217,183,126,.1)}
     .certificate-arrow:not(:disabled):hover{border-color:var(--gold);background:var(--ink);color:var(--gold);transform:scale(1.06)}
@@ -108,8 +113,11 @@
     .certificates{width:100%;min-width:0;max-width:100%;margin:0 0 23px;padding:0;overflow:hidden}
     .certificate-track{width:100%;min-width:0;max-width:100%;overflow-x:scroll;padding-right:4px;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y}
     .certificate-arrow{display:none}
+    .certificate-click-preview{padding:12px;align-items:center}
+    .certificate-click-preview figure{max-width:100%;max-height:calc(100dvh - 24px);padding:8px;-webkit-overflow-scrolling:touch;touch-action:pinch-zoom}
+    .certificate-click-preview img{max-width:calc(100vw - 42px);max-height:calc(100dvh - 92px);touch-action:pinch-zoom}
   }
-  @media(prefers-reduced-motion:reduce){.certificate-track{scroll-behavior:auto}.certificate-card,.certificate-arrow{transition:none}.certificate-card.is-current,.certificate-card:hover,.certificate-card:focus-visible{transform:none}}
+  @media(prefers-reduced-motion:reduce){.certificate-track{scroll-behavior:auto}.certificate-card,.certificate-arrow,.certificate-click-preview{transition:none}.certificate-card.is-current,.certificate-card:hover,.certificate-card:focus-visible{transform:none}}
 </style>
 </head>
 <body>
@@ -151,39 +159,39 @@
     var certificates = [
       {
         title: 'Управление приоритетными каналами сбыта',
-        url: 'https://docs.google.com/document/d/1bw32JfvSLr4o5nJNXXQ70ivzTPnnU9CTh1OpScZUmLc/edit?usp=sharing'
+        image: './certificate-01.jpg'
       },
       {
         title: 'Мастер торговых переговоров',
-        url: 'https://docs.google.com/document/d/1AU0GxBoJqMCuHA0VM8rGOdMzWpU-3ADzaw343LGPYQI/edit?usp=sharing'
+        image: './certificate-02.jpg'
       },
       {
         title: 'Управление командой продаж',
-        url: 'https://docs.google.com/document/d/1YDSMV-14_pxKoTXVQle9gPdz00_KfPahAVwnZDjQeV0/edit?usp=sharing'
+        image: './certificate-03.jpg'
       },
       {
         title: 'Менеджер как тренер',
-        url: 'https://docs.google.com/document/d/1TTuRMfsT7vZsHkHH0Ww9L18hiKq0IPKBNqlrBjrz5TE/edit?usp=sharing'
+        image: './certificate-04.jpg'
       },
       {
         title: 'Техники достижения результатов в переговорах. Торговая математика',
-        url: 'https://docs.google.com/document/d/1pUgtaLtjEKFMVmopf86K7jOU3JMAXQns42I06muDt0Q/edit?usp=sharing'
+        image: './certificate-05.jpg'
       },
       {
         title: 'НЛП-практик',
-        url: 'https://docs.google.com/document/d/15eYDdWl9sGnI10ePVwTVQvZccH9msitR0KpZBE8TQLs/edit?usp=sharing'
+        image: './certificate-06.jpg'
       },
       {
         title: 'Системный подход к развитию дистрибьюции',
-        url: 'https://docs.google.com/document/d/10YSR61GQm1jX9ASrMuJ0HTHR85KtuauuHgH60mrYVWQ/edit?usp=sharing'
+        image: './certificate-07.jpg'
       },
       {
         title: 'Управление результатами в дистрибьюции',
-        url: 'https://docs.google.com/document/d/1f9fui1qj2TmqEURa1us2GutjM931cEKiKLzd6KiujG8/edit?usp=sharing'
+        image: './certificate-08.jpg'
       },
       {
         title: 'Мерчендайзинг как инструмент продаж',
-        url: 'https://docs.google.com/document/d/1UZ75OtW2i8ihIIxO3ZNvDNKibTs0KO4FZcEPCI2_COY/edit?usp=sharing'
+        image: './certificate-09.jpg'
       }
     ];
     var aboutCopy = document.querySelector('.about-copy');
@@ -220,16 +228,15 @@
     track.setAttribute('aria-label', 'Лента сертификатов');
 
     certificates.forEach(function (certificate) {
-      var card = document.createElement('a');
+      var card = document.createElement('button');
       var label = document.createElement('span');
       var title = document.createElement('strong');
       var open = document.createElement('span');
 
       card.className = 'certificate-card';
-      card.href = certificate.url;
-      card.target = '_blank';
-      card.rel = 'noopener noreferrer';
-      card.setAttribute('role', 'listitem');
+      card.type = 'button';
+      card.dataset.full = certificate.image;
+      card.dataset.title = certificate.title;
       card.setAttribute('aria-label', 'Открыть сертификат: ' + certificate.title);
 
       label.className = 'certificate-label';
@@ -237,7 +244,7 @@
       title.className = 'certificate-title';
       title.textContent = certificate.title;
       open.className = 'certificate-open';
-      open.textContent = 'Открыть ↗';
+      open.textContent = 'Посмотреть';
 
       card.appendChild(label);
       card.appendChild(title);
@@ -258,7 +265,44 @@
     intro.insertAdjacentElement('afterend', carousel);
 
     var cards = Array.prototype.slice.call(track.querySelectorAll('.certificate-card'));
+    var preview = document.createElement('div');
+    var previewFigure = document.createElement('figure');
+    var previewImage = document.createElement('img');
+    var previewCaption = document.createElement('figcaption');
     var framePending = false;
+
+    preview.className = 'certificate-click-preview';
+    preview.id = 'certificate-click-preview';
+    preview.setAttribute('aria-hidden', 'true');
+    preview.setAttribute('aria-label', 'Просмотр сертификата. Нажмите, чтобы закрыть.');
+    previewImage.alt = '';
+    previewFigure.appendChild(previewImage);
+    previewFigure.appendChild(previewCaption);
+    preview.appendChild(previewFigure);
+    document.body.appendChild(preview);
+
+    function openCertificate(card) {
+      previewImage.src = card.dataset.full || '';
+      previewImage.alt = card.dataset.title || '';
+      previewCaption.textContent = card.dataset.title || '';
+      preview.classList.add('is-open');
+      preview.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCertificate() {
+      preview.classList.remove('is-open');
+      preview.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    cards.forEach(function (card) {
+      card.addEventListener('click', function () { openCertificate(card); });
+    });
+    preview.addEventListener('click', closeCertificate);
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && preview.classList.contains('is-open')) closeCertificate();
+    });
 
     function updateCarousel() {
       var trackRect = track.getBoundingClientRect();
