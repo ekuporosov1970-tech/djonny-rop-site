@@ -126,8 +126,10 @@
     .certificate-click-preview{padding:12px;align-items:center}
     .certificate-preview-panel{width:100%;height:calc(100dvh - 24px);min-height:0}
     .certificate-preview-hint,.certificate-preview-zoom{display:none!important}
-    .certificate-click-preview figure{padding:8px;-webkit-overflow-scrolling:touch;touch-action:pinch-zoom}
-    .certificate-click-preview img{max-width:calc(100vw - 42px);max-height:calc(100dvh - 110px);touch-action:pinch-zoom}
+    .certificate-click-preview figure{padding:8px;-webkit-overflow-scrolling:touch;touch-action:none}
+    .certificate-click-preview figure.is-zoomed{cursor:grab}
+    .certificate-click-preview figure.is-dragging{cursor:grabbing}
+    .certificate-click-preview img{max-width:calc(100vw - 42px);max-height:calc(100dvh - 110px);touch-action:none}
   }
   @media(prefers-reduced-motion:reduce){.certificate-track{scroll-behavior:auto}.certificate-card,.certificate-arrow,.certificate-click-preview{transition:none}.certificate-card.is-current,.certificate-card:hover,.certificate-card:focus-visible{transform:none}}
 </style>
@@ -292,6 +294,12 @@
     var previewLoadId = 0;
     var previewZoom = 1;
     var previewBaseWidth = 0;
+    var previewTouchMode = '';
+    var previewTouchDistance = 0;
+    var previewTouchZoom = 1;
+    var previewTouchX = 0;
+    var previewTouchY = 0;
+    var previewTouchMoved = false;
 
     preview.className = 'certificate-click-preview';
     preview.id = 'certificate-click-preview';
@@ -336,24 +344,27 @@
       previewZoomReset.textContent = Math.round(previewZoom * 100) + '%';
     }
 
-    function setCertificateZoom(nextZoom) {
+    function setCertificateZoom(nextZoom, focalClientX, focalClientY) {
       if (!previewBaseWidth || preview.classList.contains('is-loading')) return;
+      var figureRect = previewFigure.getBoundingClientRect();
+      var focalX = typeof focalClientX === 'number' ? focalClientX - figureRect.left : previewFigure.clientWidth / 2;
+      var focalY = typeof focalClientY === 'number' ? focalClientY - figureRect.top : previewFigure.clientHeight / 2;
       var oldWidth = Math.max(previewFigure.scrollWidth, 1);
       var oldHeight = Math.max(previewFigure.scrollHeight, 1);
-      var centerX = (previewFigure.scrollLeft + previewFigure.clientWidth / 2) / oldWidth;
-      var centerY = (previewFigure.scrollTop + previewFigure.clientHeight / 2) / oldHeight;
+      var centerX = (previewFigure.scrollLeft + focalX) / oldWidth;
+      var centerY = (previewFigure.scrollTop + focalY) / oldHeight;
 
-      previewZoom = Math.max(1, Math.min(3, Math.round(nextZoom * 4) / 4));
+      previewZoom = Math.max(1, Math.min(3, nextZoom));
       previewImage.style.width = Math.round(previewBaseWidth * previewZoom) + 'px';
       previewImage.style.maxWidth = 'none';
       previewImage.style.maxHeight = 'none';
       previewImage.style.cursor = previewZoom > 1 ? 'zoom-out' : 'zoom-in';
+      previewFigure.classList.toggle('is-zoomed', previewZoom > 1.01);
       updateCertificateZoomControls();
 
-      requestAnimationFrame(function () {
-        previewFigure.scrollLeft = Math.max(0, centerX * previewFigure.scrollWidth - previewFigure.clientWidth / 2);
-        previewFigure.scrollTop = Math.max(0, centerY * previewFigure.scrollHeight - previewFigure.clientHeight / 2);
-      });
+      previewImage.offsetWidth;
+      previewFigure.scrollLeft = Math.max(0, centerX * previewFigure.scrollWidth - focalX);
+      previewFigure.scrollTop = Math.max(0, centerY * previewFigure.scrollHeight - focalY);
     }
 
     function resetCertificateZoom() {
@@ -363,9 +374,18 @@
       previewImage.style.maxWidth = '';
       previewImage.style.maxHeight = '';
       previewImage.style.cursor = 'zoom-in';
+      previewFigure.classList.remove('is-zoomed', 'is-dragging');
       previewFigure.scrollLeft = 0;
       previewFigure.scrollTop = 0;
+      previewTouchMode = '';
+      previewTouchMoved = false;
       updateCertificateZoomControls();
+    }
+
+    function certificateTouchDistance(touches) {
+      var dx = touches[0].clientX - touches[1].clientX;
+      var dy = touches[0].clientY - touches[1].clientY;
+      return Math.sqrt(dx * dx + dy * dy);
     }
 
     function openCertificate(card) {
@@ -438,8 +458,69 @@
       event.preventDefault();
       setCertificateZoom(previewZoom + (event.deltaY < 0 ? .25 : -.25));
     }, { passive: false });
-    previewImage.addEventListener('click', function () {
-      if (matchMedia('(hover:none), (pointer:coarse)').matches) closeCertificate();
+    previewFigure.addEventListener('touchstart', function (event) {
+      if (event.touches.length === 2) {
+        event.preventDefault();
+        previewTouchMode = 'pinch';
+        previewTouchDistance = certificateTouchDistance(event.touches);
+        previewTouchZoom = previewZoom;
+        previewTouchMoved = true;
+        previewFigure.classList.remove('is-dragging');
+        return;
+      }
+      if (event.touches.length === 1 && previewZoom > 1.01) {
+        event.preventDefault();
+        previewTouchMode = 'pan';
+        previewTouchX = event.touches[0].clientX;
+        previewTouchY = event.touches[0].clientY;
+        previewTouchMoved = false;
+        previewFigure.classList.add('is-dragging');
+      }
+    }, { passive: false });
+    previewFigure.addEventListener('touchmove', function (event) {
+      if (event.touches.length === 2 && previewTouchMode === 'pinch' && previewTouchDistance) {
+        event.preventDefault();
+        var distance = certificateTouchDistance(event.touches);
+        var focalX = (event.touches[0].clientX + event.touches[1].clientX) / 2;
+        var focalY = (event.touches[0].clientY + event.touches[1].clientY) / 2;
+        setCertificateZoom(previewTouchZoom * distance / previewTouchDistance, focalX, focalY);
+        previewTouchMoved = true;
+        return;
+      }
+      if (event.touches.length === 1 && previewTouchMode === 'pan' && previewZoom > 1.01) {
+        event.preventDefault();
+        var touch = event.touches[0];
+        var deltaX = touch.clientX - previewTouchX;
+        var deltaY = touch.clientY - previewTouchY;
+        previewFigure.scrollLeft -= deltaX;
+        previewFigure.scrollTop -= deltaY;
+        previewTouchX = touch.clientX;
+        previewTouchY = touch.clientY;
+        if (Math.abs(deltaX) + Math.abs(deltaY) > 2) previewTouchMoved = true;
+      }
+    }, { passive: false });
+    previewFigure.addEventListener('touchend', function (event) {
+      previewFigure.classList.remove('is-dragging');
+      if (event.touches.length === 1 && previewZoom > 1.01) {
+        previewTouchMode = 'pan';
+        previewTouchX = event.touches[0].clientX;
+        previewTouchY = event.touches[0].clientY;
+      } else {
+        previewTouchMode = '';
+      }
+    }, { passive: true });
+    previewFigure.addEventListener('touchcancel', function () {
+      previewTouchMode = '';
+      previewFigure.classList.remove('is-dragging');
+    }, { passive: true });
+    previewImage.addEventListener('click', function (event) {
+      if (!matchMedia('(hover:none), (pointer:coarse)').matches) return;
+      if (previewTouchMoved || previewZoom > 1.01) {
+        event.preventDefault();
+        previewTouchMoved = false;
+        return;
+      }
+      closeCertificate();
     });
     document.addEventListener('keydown', function (event) {
       if (event.key === 'Escape' && preview.classList.contains('is-open')) closeCertificate();
